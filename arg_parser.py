@@ -14,7 +14,7 @@ def update_training_args_from_work_env(args):
             args.batch_size = 4
     elif args.data_args.work_env == 'hadassah':
         if args.model_name == 'roberta-base':
-            args.batch_size = 8
+            args.batch_size = 16
     else:
         raise ValueError('Invalid value for --work_env: {}'.format(args.work_env))
 
@@ -30,9 +30,9 @@ def update_data_args_from_work_env(args):
         if args.core_set_model_name == 'roberta-base':
             args.core_set_search_batch_size = 4
     elif args.work_env == 'hadassah':
-        args.cache_path = None
-        if args.model_name == 'roberta-base':
-            args.batch_size = 8
+        args.cache_path = '/home/aviad/Documents'
+        if args.core_set_model_name == 'roberta-base':
+            args.core_set_batch_size = 16
     else:
         raise ValueError('Invalid value for --work_env: {}'.format(args.work_env))
 
