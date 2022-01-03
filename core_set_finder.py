@@ -29,12 +29,13 @@ def find_core_set(dataset, args):
     if args.core_set_method == 'whole_set':
         return dataset
     elif args.core_set_method == 'random':
-        # TODO: make this random
-        model, tokenizer = get_model_and_tokenizer_from_args(args)
-        tokenized_dataset = tokenize(dataset['train'], tokenizer, args.dataset_name, ratio=0.0005)
+        dataset['train'] = dataset['train'].shuffle(seed=42)
+        dataset['train'] = dataset['train'].select(range(int(dataset.num_rows['train'] * args.core_set_size)))
 
-        hidden_states = get_hidden_states(model, tokenized_dataset, args)
+        # model, tokenizer = get_model_and_tokenizer_from_args(args)
+        # TODO: change that, len(dataset) is 3 (inside tokenize)!!
+        # tokenized_dataset = tokenize(dataset['train'], tokenizer, args.dataset_name, ratio=1)
+        # hidden_states = get_hidden_states(model, tokenized_dataset, args)
+        # core_set = dataset['train'].select(range(len(dataset['train'])))
 
-        core_set = dataset['train'].select(range(len(dataset['train'])))
-
-        return core_set
+        return dataset
