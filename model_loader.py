@@ -8,7 +8,7 @@ MODEL_BASE_DIR = 'trained_models'
 def get_model_dir_from_args(args):
     if 'model_name' in args.__dict__.keys():
         model_dir = os.path.join(MODEL_BASE_DIR, args.data_args.dataset_name, args.data_args.core_set_model_name,
-                                 args.model_name, args.data_args.core_set_size, args.data_args.core_set_method)
+                                 args.model_name, str(args.data_args.core_set_size), args.data_args.core_set_method)
         if not os.path.isdir(model_dir):
             os.makedirs(model_dir)
             print("creating model and log directory " + model_dir)

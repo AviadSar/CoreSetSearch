@@ -6,8 +6,8 @@ work_envs = ['home', 'hadassah']
 dataset_names = ['snli']
 core_set_model_names = ['roberta-base']
 model_names = ['roberta-base']
-core_set_sizes = ['1', '0.33']
-core_set_methods = ['whole_set']
+core_set_sizes = [1, 0.33]
+core_set_methods = ['whole_set', 'random']
 
 for work_env in work_envs:
     for dataset_name in dataset_names:
@@ -16,7 +16,7 @@ for work_env in work_envs:
                 for core_set_size in core_set_sizes:
                     for core_set_method in core_set_methods:
                         args_file_dir = os.path.join('trainer_args', work_env, dataset_name, core_set_model_name,
-                                                     model_name, core_set_size, core_set_method)
+                                                     model_name, str(core_set_size), core_set_method)
                         args_file = 'args.json'
 
                         data_dict = {

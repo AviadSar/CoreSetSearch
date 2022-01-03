@@ -10,6 +10,6 @@
     "work_env": "home",
     "dataset_name": "snli",
     "core_set_method": "whole_set",
-    "core_set_size": "0.33",
+    "core_set_size": 0.33,
     "core_set_model_name": "roberta-base"
 }
