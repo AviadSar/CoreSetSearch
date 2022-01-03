@@ -35,7 +35,7 @@ def get_training_args(args):
         fp16=True,
         fp16_full_eval=True,
         fp16_backend='apex',
-        warmup_steps=0,
+        warmup_steps=500,
         weight_decay=0.01,
         evaluation_strategy="epoch",
         save_strategy="epoch",
