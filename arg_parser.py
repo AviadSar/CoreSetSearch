@@ -28,7 +28,7 @@ def update_data_args_from_work_env(args):
     if args.work_env == 'home':
         args.cache_path = 'C:\\my_documents\\datasets\\'
         if args.core_set_model_name == 'roberta-base':
-            args.core_set_search_batch_size = 4
+            args.core_set_batch_size = 4
     elif args.work_env == 'hadassah':
         args.cache_path = '/home/aviad/Documents'
         if args.core_set_model_name == 'roberta-base':
@@ -141,7 +141,7 @@ def parse_data_args():
         default="roberta-base"
     )
     parser.add_argument(
-        "--core_set_search_batch_size",
+        "--core_set_batch_size",
         help="batch size to use while processing the dataset to create a core set",
         type=int,
         default=None

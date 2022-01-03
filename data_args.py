@@ -9,5 +9,5 @@ class DataArgs(object):
         self.core_set_method = json_data["core_set_method"]
         self.core_set_size = json_data["core_set_size"]
         self.core_set_model_name = json_data["core_set_model_name"]
-        self.core_set_search_batch_size = None
+        self.core_set_batch_size = None
         self.device = None

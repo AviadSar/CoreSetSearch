@@ -25,7 +25,7 @@ def get_hidden_states_from_tokens(model, tokenized_dataset, args):
     input_ids = tokenized_dataset['tokenized_input']['input_ids']
     attention_mask = tokenized_dataset['tokenized_input']['attention_mask']
 
-    batch_size = args.core_set_search_batch_size
+    batch_size = args.core_set_batch_size
     num_inputs = len(input_ids)
 
     hidden_states = []
