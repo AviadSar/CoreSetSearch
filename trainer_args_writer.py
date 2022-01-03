@@ -23,7 +23,7 @@ for work_env in work_envs:
                             "model_name": model_name,
                             "split_ratio": [1, 1, 1],
                             "logging_steps": 10,
-                            "num_epochs": 20,
+                            "num_epochs": 1,
 
                             "work_env": work_env,
                             "dataset_name": dataset_name,

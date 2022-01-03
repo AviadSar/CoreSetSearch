@@ -1,12 +1,12 @@
 {
     "model_name": "roberta-base",
     "split_ratio": [
-        0.0005,
-        0.001,
-        0.001
+        1,
+        1,
+        1
     ],
     "logging_steps": 10,
-    "num_epochs": 20,
+    "num_epochs": 1,
     "work_env": "home",
     "dataset_name": "snli",
     "core_set_method": "whole_set",

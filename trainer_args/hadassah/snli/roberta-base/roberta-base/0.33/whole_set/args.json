@@ -6,7 +6,7 @@
         1
     ],
     "logging_steps": 10,
-    "num_epochs": 20,
+    "num_epochs": 1,
     "work_env": "hadassah",
     "dataset_name": "snli",
     "core_set_method": "whole_set",
