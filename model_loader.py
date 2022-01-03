@@ -12,9 +12,10 @@ def get_model_dir_from_args(args):
         if not os.path.isdir(model_dir):
             os.makedirs(model_dir)
             print("creating model and log directory " + model_dir)
+        return model_dir
     else:
-        raise KeyError('no model directory: "args" contain neither a model_dir, nor a core_set_model_dir')
-    return model_dir
+        return None
+
 
 
 def load_pretrained(model, args):

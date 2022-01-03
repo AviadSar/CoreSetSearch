@@ -7,7 +7,7 @@ dataset_names = ['snli']
 core_set_model_names = ['roberta-base']
 model_names = ['roberta-base']
 core_set_sizes = [1, 0.33]
-core_set_methods = ['whole_set', 'random']
+core_set_methods = ['whole_set', 'random', 'greedy_k_means']
 
 for work_env in work_envs:
     for dataset_name in dataset_names:
