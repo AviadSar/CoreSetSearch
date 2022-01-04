@@ -24,8 +24,8 @@ class GreedyKMeans:
     def update_dist(self, centers, only_new=True, reset_dist=False):
         if reset_dist:
             self.min_distances = None
-        if only_new:
-            centers = [p for p in centers if p not in self.already_selected]
+        # if only_new:
+        #     new_center = [p for p in new_center if p not in self.already_selected]
 
         if centers:
             x = self.all_pts[centers].clone().detach()  # pick only centers
