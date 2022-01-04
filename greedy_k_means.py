@@ -5,11 +5,12 @@ from sklearn.metrics import pairwise_distances
 
 class GreedyKMeans:
     def __init__(self, all_pts):
+        self.device = None
         if torch.cuda.is_available():
-            device = torch.device('cuda')
+            self.device = torch.device('cuda')
         else:
-            device = torch.device('cpu')
-        self.all_pts = torch.tensor(np.array(all_pts), device=device)
+            self.device = torch.device('cpu')
+        self.all_pts = torch.tensor(np.array(all_pts), device=self.device)
         self.dset_size = len(all_pts)
         self.min_distances = None
         self.already_selected = []
@@ -32,9 +33,9 @@ class GreedyKMeans:
             dist = ((self.all_pts - x) ** 2).sum(axis=1).reshape(-1, 1)
 
             if self.min_distances is None:
-                self.min_distances = torch.min(dist.reshape(-1, 1), dim=1).values.reshape(-1, 1)
+                self.min_distances = torch.min(dist.reshape(-1, 1), dim=1).values.reshape(-1, 1).clone().detach()
             else:
-                self.min_distances = torch.minimum(self.min_distances, dist)
+                self.min_distances = torch.minimum(self.min_distances, dist).clone().detach()
 
     def sample(self, already_selected, sample_size):
 
@@ -49,7 +50,7 @@ class GreedyKMeans:
             if not self.already_selected:
                 ind = np.random.choice(np.arange(self.dset_size))
             else:
-                ind = torch.argmax(self.min_distances)
+                ind = torch.argmax(self.min_distances).clone().detach()
 
             assert ind not in already_selected
             self.update_dist([ind], only_new=True, reset_dist=False)

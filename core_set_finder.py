@@ -78,7 +78,7 @@ def random_core_set(dataset, args):
 
 
 def core_set_by_method(dataset, method, args):
-    ratio = 1
+    ratio = 0.0001
     hidden_states = get_hidden_states(dataset, ratio, args)
     method = method(hidden_states)
     core_set_idx, cover_distance = method.sample([], int(len(dataset['train']) * ratio * args.core_set_size))
