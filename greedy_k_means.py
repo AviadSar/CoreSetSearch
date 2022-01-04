@@ -10,7 +10,7 @@ class GreedyKMeans:
             self.device = torch.device('cuda')
         else:
             self.device = torch.device('cpu')
-        self.all_pts = torch.tensor(np.array(all_pts), device=self.device, requires_grad=False)
+        self.all_pts = torch.tensor(np.array(all_pts), device=self.device)
         self.dset_size = len(all_pts)
         self.min_distances = None
         self.already_selected = []
@@ -28,37 +28,36 @@ class GreedyKMeans:
         #     new_center = [p for p in new_center if p not in self.already_selected]
 
         if centers:
-            x = self.all_pts[centers].clone().detach()  # pick only centers
+            x = self.all_pts[centers] # pick only centers
             # dist = pairwise_distances(self.all_pts, x, metric='euclidean')
-            dist = ((self.all_pts - x) ** 2).sum(axis=1).reshape(-1, 1).clone().detach()
+            dist = ((self.all_pts - x) ** 2).sum(axis=1).reshape(-1, 1)
 
             if self.min_distances is None:
-                self.min_distances = torch.min(dist.reshape(-1, 1), dim=1).values.reshape(-1, 1).clone().detach()
+                self.min_distances = torch.min(dist.reshape(-1, 1), dim=1).values.reshape(-1, 1)
             else:
-                self.min_distances = torch.minimum(self.min_distances, dist).clone().detach()
+                self.min_distances = torch.minimum(self.min_distances, dist)
 
     def sample(self, already_selected, sample_size):
-        with torch.no_grad():
-            # initially updating the distances
-            self.update_dist(already_selected, only_new=False, reset_dist=True)
-            self.already_selected = already_selected
+        # initially updating the distances
+        self.update_dist(already_selected, only_new=False, reset_dist=True)
+        self.already_selected = already_selected
 
-            # epdb.set_trace()
+        # epdb.set_trace()
 
-            # pdb.set_trace()
-            for i in range(sample_size):
-                if not self.already_selected:
-                    ind = np.random.choice(np.arange(self.dset_size))
-                else:
-                    ind = torch.argmax(self.min_distances).clone().detach()
+        # pdb.set_trace()
+        for i in range(sample_size):
+            if not self.already_selected:
+                ind = np.random.choice(np.arange(self.dset_size))
+            else:
+                ind = torch.argmax(self.min_distances).clone().detach()
 
-                self.update_dist([ind], only_new=True, reset_dist=False)
-                self.already_selected.append(ind)
+            self.update_dist([ind], only_new=True, reset_dist=False)
+            self.already_selected.append(ind)
 
-                if i % 100 == 0:
-                    print('done {} out of {} samples'.format(i, sample_size))
+            if i % 100 == 0:
+                print('done {} out of {} samples'.format(i, sample_size))
 
-            max_distance = max(self.min_distances)
-            print("Max distance from cluster : %0.2f" % max_distance)
+        max_distance = max(self.min_distances)
+        print("Max distance from cluster : %0.2f" % max_distance)
 
         return self.already_selected, max_distance
