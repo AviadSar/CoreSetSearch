@@ -10,7 +10,7 @@ class GreedyKMeans:
             self.device = torch.device('cuda')
         else:
             self.device = torch.device('cpu')
-        self.all_pts = torch.tensor(np.array(all_pts), device=self.device)
+        self.all_pts = torch.tensor(np.array(all_pts), device=self.device, requires_grad=False)
         self.dset_size = len(all_pts)
         self.min_distances = None
         self.already_selected = []
@@ -33,9 +33,9 @@ class GreedyKMeans:
             dist = ((self.all_pts - x) ** 2).sum(axis=1).reshape(-1, 1)
 
             if self.min_distances is None:
-                self.min_distances = torch.min(dist.reshape(-1, 1), dim=1).values.reshape(-1, 1).clone().detach()
+                self.min_distances = torch.min(dist.reshape(-1, 1), dim=1).values.reshape(-1, 1)
             else:
-                self.min_distances = torch.minimum(self.min_distances, dist).clone().detach()
+                self.min_distances = torch.minimum(self.min_distances, dist)
 
     def sample(self, already_selected, sample_size):
 
@@ -50,7 +50,7 @@ class GreedyKMeans:
             if not self.already_selected:
                 ind = np.random.choice(np.arange(self.dset_size))
             else:
-                ind = torch.argmax(self.min_distances).clone().detach()
+                ind = torch.argmax(self.min_distances)
 
             assert ind not in already_selected
             self.update_dist([ind], only_new=True, reset_dist=False)
