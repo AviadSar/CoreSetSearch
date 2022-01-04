@@ -28,38 +28,37 @@ class GreedyKMeans:
             centers = [p for p in centers if p not in self.already_selected]
 
         if centers:
-            x = self.all_pts[centers]  # pick only centers
+            x = self.all_pts[centers].clone().detach()  # pick only centers
             # dist = pairwise_distances(self.all_pts, x, metric='euclidean')
-            dist = ((self.all_pts - x) ** 2).sum(axis=1).reshape(-1, 1)
+            dist = ((self.all_pts - x) ** 2).sum(axis=1).reshape(-1, 1).clone().detach()
 
             if self.min_distances is None:
-                self.min_distances = torch.min(dist.reshape(-1, 1), dim=1).values.reshape(-1, 1)
+                self.min_distances = torch.min(dist.reshape(-1, 1), dim=1).values.reshape(-1, 1).clone().detach()
             else:
-                self.min_distances = torch.minimum(self.min_distances, dist)
+                self.min_distances = torch.minimum(self.min_distances, dist).clone().detach()
 
     def sample(self, already_selected, sample_size):
+        with torch.no_grad():
+            # initially updating the distances
+            self.update_dist(already_selected, only_new=False, reset_dist=True)
+            self.already_selected = already_selected
 
-        # initially updating the distances
-        self.update_dist(already_selected, only_new=False, reset_dist=True)
-        self.already_selected = already_selected
+            # epdb.set_trace()
 
-        # epdb.set_trace()
+            # pdb.set_trace()
+            for i in range(sample_size):
+                if not self.already_selected:
+                    ind = np.random.choice(np.arange(self.dset_size))
+                else:
+                    ind = torch.argmax(self.min_distances).clone().detach()
 
-        # pdb.set_trace()
-        for i in range(sample_size):
-            if not self.already_selected:
-                ind = np.random.choice(np.arange(self.dset_size))
-            else:
-                ind = torch.argmax(self.min_distances)
+                self.update_dist([ind], only_new=True, reset_dist=False)
+                self.already_selected.append(ind)
 
-            assert ind not in already_selected
-            self.update_dist([ind], only_new=True, reset_dist=False)
-            self.already_selected.append(ind)
+                if i % 100 == 0:
+                    print('done {} out of {} samples'.format(i, sample_size))
 
-            if i % 100 == 0:
-                print('done {} out of {} samples'.format(i, sample_size))
-
-        max_distance = max(self.min_distances)
-        print("Max distance from cluster : %0.2f" % max_distance)
+            max_distance = max(self.min_distances)
+            print("Max distance from cluster : %0.2f" % max_distance)
 
         return self.already_selected, max_distance
