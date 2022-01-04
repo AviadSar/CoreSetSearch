@@ -61,7 +61,7 @@ def greedy_k_means_core_set(dataset, args):
     if any(os.scandir(core_set_dir)):
         dataset['train'] = datasets.load_from_disk(core_set_dir)
     else:
-        ratio = 0.005
+        ratio = 0.0005
         hidden_states = get_hidden_states(dataset, ratio, args)
         method = GreedyKMeans(hidden_states)
         core_set_idx, cover_distance = method.sample([], int(len(dataset['train']) * ratio * args.core_set_size))
