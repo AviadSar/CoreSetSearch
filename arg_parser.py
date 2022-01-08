@@ -15,6 +15,9 @@ def update_training_args_from_work_env(args):
     elif args.data_args.work_env == 'hadassah':
         if args.model_name == 'roberta-base':
             args.batch_size = 16
+    elif args.data_args.work_env == 'huji':
+        if args.model_name == 'roberta-base':
+            args.batch_size = 1
     else:
         raise ValueError('Invalid value for --work_env: {}'.format(args.work_env))
 
@@ -30,9 +33,13 @@ def update_data_args_from_work_env(args):
         if args.core_set_model_name == 'roberta-base':
             args.core_set_batch_size = 4
     elif args.work_env == 'hadassah':
-        args.cache_path = '/home/aviad/Documents'
+        args.cache_path = '/home/aviad/Documents/datasets'
         if args.core_set_model_name == 'roberta-base':
             args.core_set_batch_size = 16
+    elif args.work_env == 'huji':
+        args.cache_path = '/cs/labs/roys/aviadsa/datasets'
+        if args.core_set_model_name == 'roberta-base':
+            args.core_set_batch_size = 1
     else:
         raise ValueError('Invalid value for --work_env: {}'.format(args.work_env))
 
@@ -63,7 +70,7 @@ def parse_trainer_args():
         help='percentage of samples in each batch of training/evaluating',
         type=int,
         nargs=3,
-        default=[0.0005, 0.01, 0.01],
+        default=[1, 0.01, 0.01],
     )
     parser.add_argument(
         '--logging_steps',
@@ -75,7 +82,7 @@ def parse_trainer_args():
         '--num_epochs',
         help='training steps between evaluations',
         type=int,
-        default=20,
+        default=1,
     )
     parser.add_argument(
         '--eval',

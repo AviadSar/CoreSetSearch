@@ -2,7 +2,7 @@ import os
 import json
 
 
-work_envs = ['home', 'hadassah']
+work_envs = ['home', 'huji', 'hadassah']
 dataset_names = ['snli']
 core_set_model_names = ['roberta-base']
 model_names = ['roberta-base']

@@ -22,6 +22,8 @@ def filter_snli(dataset, cache_dir):
 def load(args):
     dataset_name = args.dataset_name
     cache_dir = args.cache_path + dataset_name
+    if not os.path.isdir(cache_dir):
+        os.mkdir(cache_dir)
 
     dataset = load_dataset(dataset_name, cache_dir=cache_dir)
     dataset = dataset.shuffle(seed=42)
